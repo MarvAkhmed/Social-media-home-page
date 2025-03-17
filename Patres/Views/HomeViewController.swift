@@ -9,6 +9,9 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    //MARK: - Properties
+    private let viewModel = HomeViewModel.shared
+    
     //MARK: - UI Compontns
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -61,7 +64,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       guard  let cell = tableView.dequeueReusableCell(withIdentifier: CellView.identifier, for: indexPath) as? CellView  else { fatalError("coudn't dequeue cell") }
-        let post = Post(avatarImage: (UIImage(named: "image") ?? UIImage(systemName: "person"))!, username: "username", postImage: UIImage(named: "image")! , caption: "caption")
+       let post = self.viewModel.post
         cell.configureCell(with: post)
         return cell
     }
