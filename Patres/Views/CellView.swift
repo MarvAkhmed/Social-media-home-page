@@ -61,8 +61,8 @@ class CellView: UITableViewCell {
         self.postImageView = post.postImage
         self.usernameLabel.text = post.username
         self.captionLabel.text = post.caption
-        
     }
+    
     //MARK: - Initlizer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -71,6 +71,7 @@ class CellView: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError( "init(coder:) has not been implemented" )
     }
+    
     //MARK: -  Setup UI
     private func setupUI() {
         backgroundColor = .white
@@ -91,12 +92,9 @@ class CellView: UITableViewCell {
             usernameLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 45),
             usernameLabel.leadingAnchor.constraint(equalTo: avatarImageView.layoutMarginsGuide.trailingAnchor, constant: 20 ),
     
-            
-            
             postImageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             postImageView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             postImageView.heightAnchor.constraint(equalToConstant: frame.width - 20),
-            
             
             captionLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             captionLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),

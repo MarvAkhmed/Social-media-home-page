@@ -47,7 +47,7 @@ class HomeViewController: UIViewController {
         self.tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
         self.tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
-        
+
     }
     
     //MARK: - Selectors
