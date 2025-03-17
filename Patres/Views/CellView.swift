@@ -92,7 +92,7 @@ class CellView: UITableViewCell {
             usernameLabel.leadingAnchor.constraint(equalTo: avatarImageView.layoutMarginsGuide.trailingAnchor, constant: 20 ),
     
             
-            postImageView.topAnchor.constraint(equalTo: avatarImageView.layoutMarginsGuide.bottomAnchor),
+            
             postImageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             postImageView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             postImageView.heightAnchor.constraint(equalToConstant: frame.width - 20),
