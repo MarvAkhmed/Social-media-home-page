@@ -64,7 +64,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
       guard  let cell = tableView.dequeueReusableCell(withIdentifier: CellView.identifier, for: indexPath) as? CellView  else { fatalError("coudn't dequeue cell") }
-       let post = self.viewModel.post
+        let post = self.viewModel.post
         cell.configureCell(with: post)
         return cell
     }
