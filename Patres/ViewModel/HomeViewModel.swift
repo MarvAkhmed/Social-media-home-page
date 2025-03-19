@@ -10,14 +10,7 @@ import UIKit
 class HomeViewModel {
     
     //MARK: - SingleTone
-    static var shared: HomeViewModel {
-        return instance
-    }
-    private static var instance: HomeViewModel = {
-        let homeViewModel = HomeViewModel()
-        return homeViewModel
-    }()
-    
+    static let shared: HomeViewModel = HomeViewModel()
     private init() {}
     
     //MARK: - Variabels
