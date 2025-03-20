@@ -11,7 +11,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Properties
     private let viewModel = HomeViewModel.shared
-    var posts: [Post] = []
+    private(set) var posts: [Post] = []
     var isPaginating: Bool = false
     
     // MARK: - UI Components
@@ -25,12 +25,7 @@ class HomeViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        return refreshControl
-    }()
     
-
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,8 +52,8 @@ class HomeViewController: UIViewController {
             self.tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             self.tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
         ])
+    
     }
     
     // MARK: - API Requests
@@ -79,15 +74,12 @@ class HomeViewController: UIViewController {
             }
         }
     }
-
-
+    
+    
     //MARK: - Selectors
     @objc private func didTapUpdateButton() {
         let indexPath = IndexPath(row: 0, section: 0)
-        
-        DispatchQueue.main.async {
-            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        }
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 }
 
@@ -111,8 +103,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         400
     }
-
-    
 }
  // MARK: - UITableView Pagination
 extension HomeViewController: UIScrollViewDelegate {
@@ -125,7 +115,6 @@ extension HomeViewController: UIScrollViewDelegate {
             self.tableView.tableFooterView = createSpinnerFooter()
             self.bindData()
         }
-        
     }
 }
 
