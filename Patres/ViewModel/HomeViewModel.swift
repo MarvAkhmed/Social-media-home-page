@@ -18,13 +18,7 @@ class HomeViewModel {
     //MARK: - SingleTone
     static let shared: HomeViewModel = HomeViewModel()
     private init() {}
-    
-    
-    //MARK: - Variables
-    private(set) var posts: [Post] = []
-    private var isPaginating = false
-    var onPostsUpdated: (() -> Void)?
-    
+  
     //MARK: - Networking method (fetching and Parsing the Data from API)
     func fetchPosts(pagination: Bool = false) async throws -> [Post] {
         let originalDataEndpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/origialData"
@@ -45,6 +39,7 @@ class HomeViewModel {
             throw FetchError.networkError(error)
         }
     }
+    
     
     
 }
