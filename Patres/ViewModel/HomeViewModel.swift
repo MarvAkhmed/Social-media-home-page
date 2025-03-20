@@ -20,7 +20,7 @@ class HomeViewModel {
     private init() {}
   
     //MARK: - Networking method (fetching and Parsing the Data from API)
-    func fetchPosts(pagination: Bool = false) async throws -> [Post] {
+    func fetchPosts(pagination: Bool = false) async throws -> [PostL] {
         let originalDataEndpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/origialData"
         let paginatedDataEndpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/pagination"
         
@@ -32,7 +32,7 @@ class HomeViewModel {
             let (data, _) = try await URLSession.shared.data(from: url)
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode([Post].self, from: data)
+            return try decoder.decode([PostL].self, from: data)
         } catch let error as DecodingError {
             throw FetchError.decodingError(error)
         } catch {

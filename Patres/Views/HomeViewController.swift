@@ -11,7 +11,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Properties
     private let viewModel = HomeViewModel.shared
-    private(set) var posts: [Post] = []
+    private(set) var posts: [PostL] = []
     var isPaginating: Bool = false
     
     // MARK: - UI Components
