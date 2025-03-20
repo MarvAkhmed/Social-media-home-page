@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct Post: Decodable {
+struct PostL: Decodable {
     let id: String
     let username: String
     var avatarUrl: String?
