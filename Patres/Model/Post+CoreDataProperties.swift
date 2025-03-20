@@ -2,7 +2,7 @@
 //  Post+CoreDataProperties.swift
 //  Patres
 //
-//  Created by Marwa Awad on 20.03.2025.
+//  Created by Marwa Awad on 21.03.2025.
 //
 //
 
@@ -16,12 +16,12 @@ extension Post {
         return NSFetchRequest<Post>(entityName: "Post")
     }
 
-    @NSManaged public var avaratUrl: String?
-    @NSManaged public var caption: String?
-    @NSManaged public var id: UUID?
-    @NSManaged public var isLiked: Bool
-    @NSManaged public var postImageUrl: String?
+    @NSManaged public var id: String?
     @NSManaged public var username: String?
+    @NSManaged public var avatarUrl: String?
+    @NSManaged public var postImageUrl: String?
+    @NSManaged public var caption: String?
+    @NSManaged public var isLiked: Bool
 
 }
 
