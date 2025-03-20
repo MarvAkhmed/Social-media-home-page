@@ -6,14 +6,7 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		C5374B992D8CC6B000F85982 /* Post+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5374B982D8CC6B000F85982 /* Post+CoreDataProperties.swift */; };
-		C5374B9A2D8CC6B000F85982 /* Post+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5374B972D8CC6B000F85982 /* Post+CoreDataClass.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		C5374B972D8CC6B000F85982 /* Post+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Post+CoreDataClass.swift"; path = "Patres/Model/Post+CoreDataClass.swift"; sourceTree = "<group>"; };
-		C5374B982D8CC6B000F85982 /* Post+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Post+CoreDataProperties.swift"; path = "Patres/Model/Post+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C55BFDE02D889C0C002D25A4 /* Patres.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Patres.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -21,8 +14,10 @@
 		C55BFDF52D889C0D002D25A4 /* Exceptions for "Patres" folder in "Patres" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"/Localized: Supportings/LaunchScreen.storyboard",
 				Info.plist,
 				Patres.xcdatamodeld,
+				Supportings/Assets.xcassets,
 			);
 			target = C55BFDDF2D889C0C002D25A4 /* Patres */;
 		};
@@ -53,8 +48,6 @@
 		C55BFDD72D889C0C002D25A4 = {
 			isa = PBXGroup;
 			children = (
-				C5374B972D8CC6B000F85982 /* Post+CoreDataClass.swift */,
-				C5374B982D8CC6B000F85982 /* Post+CoreDataProperties.swift */,
 				C55BFDE22D889C0C002D25A4 /* Patres */,
 				C55BFDE12D889C0C002D25A4 /* Products */,
 			);
@@ -144,8 +137,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5374B992D8CC6B000F85982 /* Post+CoreDataProperties.swift in Sources */,
-				C5374B9A2D8CC6B000F85982 /* Post+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
