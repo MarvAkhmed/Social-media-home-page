@@ -5,7 +5,6 @@
 //  Created by Marwa Awad on 17.03.2025.
 //
 
-import Foundation
 import UIKit
 
 class CellView: UITableViewCell {
@@ -13,6 +12,7 @@ class CellView: UITableViewCell {
     // MARK: - Properties
     public static let identifier = "CellView"
     private var isLiked: Bool = false
+    
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -51,9 +51,15 @@ class CellView: UITableViewCell {
         button.tintColor = .red
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         button.setImage(UIImage(systemName: "heart"), for: .normal)
-        
-        
         return button
+    }()
+    
+    private lazy var loadingSpinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.color = .gray
+        
+        return spinner
     }()
     
     // MARK: - Initializers
@@ -67,32 +73,45 @@ class CellView: UITableViewCell {
     
     //MARK: - Cell Configuration
     public func configure(with post: Post){
-        if let avatarUrl = URL(string: post.avatarUrl) {
-            downloadImage(from: avatarUrl, into: avatarImageView)
-        }
-        if let postImageUrl = URL(string: post.postImageUrl) {
-            downloadImage(from: postImageUrl, into: postImageView)
-        }
-        self.usernameLabel.text = post.username
-        self.captionLabel.text = post.caption
         
+        handleAvatarImage(with: post)
+        handlePostImage(with: post)
         
-        self.isLiked = post.isLiked ?? false
-        likeButton.isSelected = isLiked
-        let imageName = isLiked ? "heart.fill" : "heart"
-        likeButton.setImage(UIImage(systemName: imageName), for: .normal)
+        usernameLabel.text = post.username
+        captionLabel.text = post.caption
+        isLiked = post.isLiked ?? false
+        
     }
     
+    // download the images from the decoded url to the ui components
     private func downloadImage(from url: URL, into imageView: UIImageView) {
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                 DispatchQueue.main.async {
                     imageView.image = image
+                    self.loadingSpinner.stopAnimating()
                 }
             }
         }
     }
+    // avatar image url
+    private func handleAvatarImage(with post: Post) {
+        if let url = URL(string: post.avatarUrl ?? "") {
+            downloadImage(from: url, into: avatarImageView)
+        }else {
+            avatarImageView.image = UIImage(systemName: "person")
+        }
+    }
     
+    //post image url
+    private func handlePostImage(with post: Post) {
+        if let postImageUrl = URL(string: post.postImageUrl) {
+            loadingSpinner.startAnimating()
+            downloadImage(from: postImageUrl, into: postImageView)
+        }else {
+            postImageView.image = UIImage(systemName: "questionmark.app")
+        }
+    }
     
     // MARK: - UI Setup
     private func setupUI() {
@@ -103,6 +122,7 @@ class CellView: UITableViewCell {
         addSubview(postImageView)
         addSubview(captionLabel)
         addSubview(likeButton)
+        addSubview(loadingSpinner)
         
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
@@ -123,21 +143,26 @@ class CellView: UITableViewCell {
             
             likeButton.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             likeButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            
+            loadingSpinner.centerYAnchor.constraint(equalTo: centerYAnchor),
+            loadingSpinner.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
         ])
         
         self.layoutIfNeeded()
         bringSubviewToFront(likeButton)
     }
     
+    //MARK: -  Like Button UI manibulate
+    private func updateLikeButtonUI() {
+        let imageName = isLiked ? "heart.fill" : "heart"
+        likeButton.setImage(UIImage(systemName: imageName), for: .normal)
+        likeButton.isSelected = isLiked
+    }
+    
     //MARK: - Selectors
     @objc private func likeButtonTapped() {
         isLiked.toggle()
-        likeButton.isSelected = isLiked
-
-        if isLiked {
-            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        } else {
-            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        }
+        updateLikeButtonUI()
     }
 }

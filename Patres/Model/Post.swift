@@ -10,10 +10,9 @@ import UIKit
 struct Post: Decodable {
     let id: String
     let username: String
-    let avatarUrl: String
+    var avatarUrl: String?
     let postImageUrl: String
     let caption: String
     let isLiked: Bool?
-    
 
 }

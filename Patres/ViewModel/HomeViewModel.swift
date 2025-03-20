@@ -20,24 +20,31 @@ class HomeViewModel {
     private init() {}
     
     
-    func reloadTableView(_ tableView: UITableView) {
-        DispatchQueue.main.async {
-            tableView.reloadData()
-        }
-    }
+    //MARK: - Variables
+    private(set) var posts: [Post] = []
+    private var isPaginating = false
+    var onPostsUpdated: (() -> Void)?
+    
     //MARK: - Networking method (fetching and Parsing the Data from API)
-    func fetchPosts() async throws -> [Post]{
-        let endpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/getPosts"
-        guard let url = URL(string: endpoint) else { throw FetchError.invalidURL}
-       
-        let (data, _) = try await URLSession.shared.data(from: url)
+    func fetchPosts(pagination: Bool = false) async throws -> [Post] {
+        let originalDataEndpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/origialData"
+        let paginatedDataEndpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/pagination"
+        
+        let endpoint = pagination ? paginatedDataEndpoint : originalDataEndpoint
+        
+        guard let url = URL(string: endpoint) else {  throw FetchError.invalidURL }
+        
         do {
+            let (data, _) = try await URLSession.shared.data(from: url)
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             return try decoder.decode([Post].self, from: data)
-        } catch {
+        } catch let error as DecodingError {
             throw FetchError.decodingError(error)
+        } catch {
+            throw FetchError.networkError(error)
         }
-        
     }
+    
+    
 }

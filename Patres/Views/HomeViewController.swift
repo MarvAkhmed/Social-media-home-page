@@ -12,6 +12,7 @@ class HomeViewController: UIViewController {
     //MARK: - Properties
     private let viewModel = HomeViewModel.shared
     var posts: [Post] = []
+    var isPaginating: Bool = false
     
     // MARK: - UI Components
     private lazy var tableView: UITableView = {
@@ -21,16 +22,22 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.register(CellView.self, forCellReuseIdentifier: CellView.identifier)
         tableView.rowHeight = UITableView.automaticDimension
-        
         return tableView
     }()
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        return refreshControl
+    }()
+    
+
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindData()
         configureNavigationBar()
         setupUI()
-        fetchData()
+        
     }
     
     // MARK: - Navigation Bar Configuration
@@ -50,20 +57,37 @@ class HomeViewController: UIViewController {
             self.tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             self.tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             self.tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
         ])
     }
     
     // MARK: - API Requests
-    private func fetchData() {
+    private func bindData() {
         Task {
-            posts = try await viewModel.fetchPosts()
-            viewModel.reloadTableView(self.tableView)
+            do {
+                let newPosts = try await viewModel.fetchPosts(pagination: true)
+                self.posts.append(contentsOf: newPosts)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.isPaginating = false
+                    self.tableView.tableFooterView = nil
+                    self.tableView.isUserInteractionEnabled = true
+                }
+            } catch {
+                print("Pagination fetch error: \(error)")
+                self.isPaginating = false
+            }
         }
     }
-    
+
+
     //MARK: - Selectors
     @objc private func didTapUpdateButton() {
-        fetchData()
+        let indexPath = IndexPath(row: 0, section: 0)
+        
+        DispatchQueue.main.async {
+            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
 }
 
@@ -74,7 +98,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      guard  let cell = tableView.dequeueReusableCell(withIdentifier: CellView.identifier, for: indexPath) as? CellView  else { fatalError("Couldn't dequeue cell") }
+        guard  let cell = tableView.dequeueReusableCell(withIdentifier: CellView.identifier, for: indexPath) as? CellView  else { fatalError("Couldn't dequeue cell") }
         
         let post = posts[indexPath.row]
         cell.configure(with: post)
@@ -87,4 +111,39 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         400
     }
+
+    
+}
+ // MARK: - UITableView Pagination
+extension HomeViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if position > (tableView.contentSize.height - 100 - scrollView.frame.size.height) {
+            guard !isPaginating else { return }
+            isPaginating = true
+            tableView.isUserInteractionEnabled = false
+            self.tableView.tableFooterView = createSpinnerFooter()
+            self.bindData()
+        }
+        
+    }
+}
+
+// MARK: - Spinner Footer
+extension HomeViewController {
+    private func createSpinnerFooter() -> UIView {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        footerView.addSubview(spinner)
+
+        NSLayoutConstraint.activate([
+            spinner.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
+            spinner.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
+        ])
+        
+        spinner.startAnimating()
+        return footerView
+    }
+
 }
