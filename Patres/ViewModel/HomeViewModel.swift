@@ -7,12 +7,37 @@
 
 import UIKit
 
+enum FetchError: Error {
+    case invalidURL
+    case networkError(Error)
+    case decodingError(Error)
+    case noData
+}
+
 class HomeViewModel {
-    
     //MARK: - SingleTone
     static let shared: HomeViewModel = HomeViewModel()
     private init() {}
     
-    //MARK: - Variabels
-    let post = Post(avatarImage: (UIImage(named: "image") ?? UIImage(systemName: "person"))!, username: "username", postImage: UIImage(named: "image")! , caption: "caption")
+    
+    func reloadTableView(_ tableView: UITableView) {
+        DispatchQueue.main.async {
+            tableView.reloadData()
+        }
+    }
+    //MARK: - Networking method (Parsing the API    )
+    func fetchPosts() async throws -> [Post]{
+        let endpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/getPosts"
+        guard let url = URL(string: endpoint) else { throw FetchError.invalidURL}
+       
+        let (data, _) = try await URLSession.shared.data(from: url)
+        do {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return try decoder.decode([Post].self, from: data)
+        } catch {
+            throw FetchError.decodingError(error)
+        }
+        
+    }
 }

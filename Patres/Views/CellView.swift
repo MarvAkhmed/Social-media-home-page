@@ -9,16 +9,17 @@ import Foundation
 import UIKit
 
 class CellView: UITableViewCell {
-    //MARK: - Varaibels
+    
+    // MARK: - Properties
     public static let identifier = "CellView"
     
-    //MARK: - UI Compontns
+    // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor  = .red
         imageView.layer.cornerRadius = 25
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     
@@ -33,7 +34,6 @@ class CellView: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .gray
         return imageView
     }()
     
@@ -55,15 +55,7 @@ class CellView: UITableViewCell {
         return button
     }()
     
-    //MARK: - Cell Configuration
-    public func configureCell(with post: Post){
-        self.avatarImageView = post.avatarImage
-        self.postImageView = post.postImage
-        self.usernameLabel.text = post.username
-        self.captionLabel.text = post.caption
-    }
-    
-    //MARK: - Initlizer
+    // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupUI()
@@ -72,7 +64,31 @@ class CellView: UITableViewCell {
         fatalError( "init(coder:) has not been implemented" )
     }
     
-    //MARK: -  Setup UI
+    //MARK: - Cell Configuration
+    public func configure(with post: Post){
+        if let avatarUrl = URL(string: post.avatarUrl) {
+            downloadImage(from: avatarUrl, into: avatarImageView)
+        }
+        if let postImageUrl = URL(string: post.postImageUrl) {
+            downloadImage(from: postImageUrl, into: postImageView)
+        }
+        self.usernameLabel.text = post.username
+        self.captionLabel.text = post.caption
+        self.likeButton.isSelected = post.isLiked ?? false
+    }
+    
+    private func downloadImage(from url: URL, into imageView: UIImageView) {
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    imageView.image = image
+                }
+            }
+        }
+    }
+    
+
+    // MARK: - UI Setup
     private func setupUI() {
         backgroundColor = .white
         
