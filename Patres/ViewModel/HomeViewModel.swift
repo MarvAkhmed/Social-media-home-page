@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 enum FetchError: Error {
     case invalidURL
@@ -40,6 +41,8 @@ class HomeViewModel {
         }
     }
     
-    
-    
+    func refToCoreData() {
+
+        
+    }
 }

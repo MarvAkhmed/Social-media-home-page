@@ -29,7 +29,7 @@ class HomeViewController: UIViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindData()
+        try? bindData()
         configureNavigationBar()
         setupUI()
         
@@ -71,6 +71,7 @@ class HomeViewController: UIViewController {
             } catch {
                 print("Pagination fetch error: \(error)")
                 self.isPaginating = false
+
             }
         }
     }
@@ -79,7 +80,10 @@ class HomeViewController: UIViewController {
     //MARK: - Selectors
     @objc private func didTapUpdateButton() {
         let indexPath = IndexPath(row: 0, section: 0)
-        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        guard self.tableView.numberOfRows(inSection: 0) > 0 else { return }
+        DispatchQueue.main.async {
+            self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
 }
 
@@ -113,7 +117,7 @@ extension HomeViewController: UIScrollViewDelegate {
             isPaginating = true
             tableView.isUserInteractionEnabled = false
             self.tableView.tableFooterView = createSpinnerFooter()
-            self.bindData()
+            bindData()
         }
     }
 }
