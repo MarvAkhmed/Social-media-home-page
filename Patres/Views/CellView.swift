@@ -12,7 +12,7 @@ class CellView: UITableViewCell {
     
     // MARK: - Properties
     public static let identifier = "CellView"
-    
+    private var isLiked: Bool = false
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -48,10 +48,11 @@ class CellView: UITableViewCell {
     private lazy var likeButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(systemName: "heart") , for: .normal)
-        button.setImage(UIImage(systemName: "heart.fill") , for: .selected)
         button.tintColor = .red
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        
+        
         return button
     }()
     
@@ -74,7 +75,12 @@ class CellView: UITableViewCell {
         }
         self.usernameLabel.text = post.username
         self.captionLabel.text = post.caption
-        self.likeButton.isSelected = post.isLiked ?? false
+        
+        
+        self.isLiked = post.isLiked ?? false
+        likeButton.isSelected = isLiked
+        let imageName = isLiked ? "heart.fill" : "heart"
+        likeButton.setImage(UIImage(systemName: imageName), for: .normal)
     }
     
     private func downloadImage(from url: URL, into imageView: UIImageView) {
@@ -87,7 +93,7 @@ class CellView: UITableViewCell {
         }
     }
     
-
+    
     // MARK: - UI Setup
     private func setupUI() {
         backgroundColor = .white
@@ -99,30 +105,39 @@ class CellView: UITableViewCell {
         addSubview(likeButton)
         
         NSLayoutConstraint.activate([
-            avatarImageView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 30),
+            avatarImageView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             avatarImageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             avatarImageView.widthAnchor.constraint(equalToConstant: 50),
             avatarImageView.heightAnchor.constraint(equalToConstant: 50),
-            avatarImageView.bottomAnchor.constraint(equalTo: postImageView.topAnchor, constant: -5),
             
-            usernameLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 45),
+            usernameLabel.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 10),
             usernameLabel.leadingAnchor.constraint(equalTo: avatarImageView.layoutMarginsGuide.trailingAnchor, constant: 20 ),
-    
+            
             postImageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             postImageView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             postImageView.heightAnchor.constraint(equalToConstant: frame.width - 20),
+            postImageView.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor),
             
             captionLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             captionLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            captionLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             likeButton.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             likeButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            likeButton.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+        
+        self.layoutIfNeeded()
+        bringSubviewToFront(likeButton)
     }
+    
     //MARK: - Selectors
     @objc private func likeButtonTapped() {
-        print("like button tapped")
+        isLiked.toggle()
+        likeButton.isSelected = isLiked
+
+        if isLiked {
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
     }
 }

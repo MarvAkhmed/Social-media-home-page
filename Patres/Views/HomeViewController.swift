@@ -21,6 +21,7 @@ class HomeViewController: UIViewController {
         tableView.delegate = self
         tableView.register(CellView.self, forCellReuseIdentifier: CellView.identifier)
         tableView.rowHeight = UITableView.automaticDimension
+        
         return tableView
     }()
     
@@ -82,5 +83,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return false
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        400
     }
 }
