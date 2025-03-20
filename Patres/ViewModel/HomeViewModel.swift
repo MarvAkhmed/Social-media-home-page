@@ -25,7 +25,7 @@ class HomeViewModel {
             tableView.reloadData()
         }
     }
-    //MARK: - Networking method (fetching and Parsing the Data from api)
+    //MARK: - Networking method (fetching and Parsing the Data from API)
     func fetchPosts() async throws -> [Post]{
         let endpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/getPosts"
         guard let url = URL(string: endpoint) else { throw FetchError.invalidURL}
