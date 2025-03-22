@@ -11,7 +11,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Properties
     private let viewModel = HomeViewModel.shared
-    private(set) var posts: [PostL] = []
+    private(set) var posts: [PostDecoded] = []
     var isPaginating: Bool = false
     
     // MARK: - UI Components
@@ -62,7 +62,9 @@ class HomeViewController: UIViewController {
             do {
                 let newPosts = try await viewModel.fetchPosts(pagination: true)
                 self.posts.append(contentsOf: newPosts)
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [self] in
+                    self.viewModel.mapDecodedPostToCoreData(posts: newPosts)
+                    viewModel.mapCoreDataPostToDecodedPost()
                     self.tableView.reloadData()
                     self.isPaginating = false
                     self.tableView.tableFooterView = nil

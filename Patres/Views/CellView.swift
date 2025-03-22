@@ -72,7 +72,7 @@ class CellView: UITableViewCell {
     }
     
     //MARK: - Cell Configuration
-    public func configure(with post: PostL){
+    public func configure(with post: PostDecoded){
         
         handleAvatarImage(with: post)
         handlePostImage(with: post)
@@ -95,7 +95,7 @@ class CellView: UITableViewCell {
         }
     }
     // avatar image url
-    private func handleAvatarImage(with post: PostL) {
+    private func handleAvatarImage(with post: PostDecoded) {
         if let url = URL(string: post.avatarUrl ?? "") {
             downloadImage(from: url, into: avatarImageView)
         }else {
@@ -104,8 +104,8 @@ class CellView: UITableViewCell {
     }
     
     //post image url
-    private func handlePostImage(with post: PostL) {
-        if let postImageUrl = URL(string: post.postImageUrl) {
+    private func handlePostImage(with post: PostDecoded) {
+        if let postImageUrl = URL(string: post.postImageUrl!) {
             loadingSpinner.startAnimating()
             downloadImage(from: postImageUrl, into: postImageView)
         }else {

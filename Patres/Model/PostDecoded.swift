@@ -8,11 +8,11 @@
 import UIKit
 
 struct PostDecoded: Decodable {
-    let id: String
-    let username: String
+    let id: String?
+    let username: String?
     var avatarUrl: String?
-    let postImageUrl: String
-    let caption: String
-    let isLiked: Bool?
+    let postImageUrl: String?
+    let caption: String?
+    let isLiked: Bool
 
 }
