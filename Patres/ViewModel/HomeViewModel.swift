@@ -21,7 +21,7 @@ class HomeViewModel {
     private init() {}
     
     
-//    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     //MARK: - Networking method (fetching and Parsing the Data from API)
     func fetchPosts(pagination: Bool = false) async throws -> [PostDecoded] {
         let originalDataEndpoint = "https://67db5c6b1fd9e43fe47457fa.mockapi.io/origialData"

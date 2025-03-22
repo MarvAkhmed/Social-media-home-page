@@ -23,17 +23,29 @@
 			membershipExceptions = (
 				"/Localized: Supportings/LaunchScreen.storyboard",
 				Info.plist,
+				Model.xcdatamodeld,
 				Supportings/Assets.xcassets,
 			);
 			target = C55BFDDF2D889C0C002D25A4 /* Patres */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		C54D0AD82D8EAAEC003DEAA6 /* Exceptions for "Patres" folder in "Copy Bundle Resources" phase from "Patres" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = C55BFDDE2D889C0C002D25A4 /* Resources */;
+			membershipExceptions = (
+				Model.xcdatamodeld,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C55BFDE22D889C0C002D25A4 /* Patres */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				C55BFDF52D889C0D002D25A4 /* Exceptions for "Patres" folder in "Patres" target */,
+				C54D0AD82D8EAAEC003DEAA6 /* Exceptions for "Patres" folder in "Copy Bundle Resources" phase from "Patres" target */,
 			);
 			path = Patres;
 			sourceTree = "<group>";

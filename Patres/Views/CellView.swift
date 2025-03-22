@@ -79,7 +79,7 @@ class CellView: UITableViewCell {
         
         usernameLabel.text = post.username
         captionLabel.text = post.caption
-        isLiked = post.isLiked ?? false
+        isLiked = post.isLiked 
         
     }
     
