@@ -16,12 +16,12 @@ extension Post {
         return NSFetchRequest<Post>(entityName: "Post")
     }
 
-    @NSManaged public var id: String?
-    @NSManaged public var username: String?
-    @NSManaged public var avatarUrl: String?
-    @NSManaged public var postImageUrl: String?
+    @NSManaged public var avatarUrl: Data?
     @NSManaged public var caption: String?
+    @NSManaged public var id: String?
     @NSManaged public var isLiked: Bool
+    @NSManaged public var postImageUrl: Data?
+    @NSManaged public var username: String?
 
 }
 
