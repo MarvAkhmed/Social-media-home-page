@@ -13,7 +13,7 @@ class ResuableViews: UIView {
     
     func showNetworkErrorAlert(from viewController: UIViewController) {
         print("should show the alert")
-        let alertController = UIAlertController(title: "Network Error", message: "No internet connection. Please check your network settings.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Network Error", message: "No internet connection. and you don't have any posts to show! Try again later.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAction)
         

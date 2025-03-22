@@ -22,7 +22,7 @@ class HomeViewModel {
     //MARK: - Variables
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     private(set) var posts: [PostDecoded] = []
-    
+    var isLiked: Bool = false
     //MARK: - Networking method (fetching and Parsing the Data from API)
     
     /// fetching the posts
@@ -104,13 +104,13 @@ class HomeViewModel {
     func mapCoreDataPostToDecodedPost(_ post: Post) -> PostDecoded {
         let avatarFilePath = post.avatarUrl != nil ? saveImageToDocumentsDirectory(imageData: post.avatarUrl!) : nil
         let postImageFilePath = post.postImageUrl != nil ? saveImageToDocumentsDirectory(imageData: post.postImageUrl!) : nil
+        
         let decodedPostDto = PostDecoded(id: post.id,
                                          username: post.username ,
                                          avatarUrl: avatarFilePath,
                                          postImageUrl:  postImageFilePath,
                                          caption: post.caption ?? "no comments!",
                                          isLiked: post.isLiked)
-        
         return decodedPostDto
     }
     
@@ -139,7 +139,18 @@ extension HomeViewModel {
 }
 //MARK: - Update the core data(Like button)
 extension HomeViewModel {
-    
+    /// check if the post liked
+    func saveLikeState(for postId: String) {
+        
+        guard let post = findPostById(by: postId) else {
+            print("Post with id \(postId) not found.")
+            return
+        }
+        
+        print("in the core data Post with id \(postId) is Liked \(post.isLiked)")
+   
+        saveToCoreData()
+    }
 }
 
 //MARK: - General functions to make checks on the core data
@@ -151,4 +162,12 @@ extension HomeViewModel {
         let count = (try? context.count(for: fetchRequest)) ?? 0
         return count > 0
     }
+    
+    /// find the post by id
+    func findPostById(by id: String) -> Post? {
+        let fetchRequest: NSFetchRequest<Post> = Post.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", id)
+        return (try? context.fetch(fetchRequest))?.first
+    }
+
 }

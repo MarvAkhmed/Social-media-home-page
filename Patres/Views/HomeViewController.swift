@@ -12,6 +12,7 @@ class HomeViewController: UIViewController {
     //MARK: - Properties
     private let viewModel = HomeViewModel.shared
     var isPaginating: Bool = false
+    private let views = ResuableViews.shared
     
     // MARK: - UI Components
     private lazy var tableView: UITableView = {
@@ -23,7 +24,6 @@ class HomeViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         return tableView
     }()
-    
     
     //MARK: - LifeCycle
     override func viewDidLoad() {
@@ -58,7 +58,7 @@ class HomeViewController: UIViewController {
             do {
                 try await viewModel.addNewPosts()
                 DispatchQueue.main.async { [self] in
-                    self.tableView.reloadData()
+                    viewModel.posts.isEmpty ? views.showNetworkErrorAlert(from: self) : reloadTableView()
                     self.isPaginating = false
                     self.tableView.tableFooterView = nil
                     self.tableView.isUserInteractionEnabled = true
@@ -66,11 +66,14 @@ class HomeViewController: UIViewController {
             } catch {
                 print("Pagination fetch error: \(error.localizedDescription)")
                 self.isPaginating = false
-
+                views.showNetworkErrorAlert(from: self)
             }
         }
     }
     
+    func reloadTableView() {
+        self.tableView.reloadData()
+    }
     //MARK: - Selectors
     @objc private func didTapUpdateButton() {
         let indexPath = IndexPath(row: 0, section: 0)

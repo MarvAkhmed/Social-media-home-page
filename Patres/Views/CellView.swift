@@ -11,7 +11,8 @@ class CellView: UITableViewCell {
     
     // MARK: - Properties
     public static let identifier = "CellView"
-    private var isLiked: Bool = false
+    let viewModel  = HomeViewModel.shared
+    private var post: PostDecoded?
     
     // MARK: - UI Components
     private lazy var avatarImageView: UIImageView = {
@@ -50,7 +51,7 @@ class CellView: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .red
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
-        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.setImage(UIImage(systemName:  "heart"), for: .normal)
         return button
     }()
     
@@ -72,12 +73,13 @@ class CellView: UITableViewCell {
     }
     
     //MARK: - Cell Configuration
+    
     public func configure(with post: PostDecoded){
+        self.post = post
         handleAvatarImage(with: post)
         handlePostImage(with: post)
         usernameLabel.text = post.username
         captionLabel.text = post.caption
-        isLiked = post.isLiked 
         
     }
     
@@ -93,10 +95,11 @@ class CellView: UITableViewCell {
             }
         }
     }
+    
     // avatar image url
-    private func handleAvatarImage(with post: PostDecoded) {
-        if let url = URL(string: post.avatarUrl ?? "") {
-            downloadImage(from: url, into: avatarImageView)
+    private func handleAvatarImage(with post: PostDecoded)  {
+        if let avatarUrl = URL(string: post.avatarUrl!) {
+            downloadImage(from: avatarUrl, into: avatarImageView)
         }else {
             avatarImageView.image = UIImage(systemName: "person")
         }
@@ -104,7 +107,7 @@ class CellView: UITableViewCell {
     
     //post image url
     private func handlePostImage(with post: PostDecoded) {
-        if let postImageUrl = URL(string: post.postImageUrl ?? "" ) {
+        if let postImageUrl = URL(string: post.postImageUrl!) {
             loadingSpinner.startAnimating()
             downloadImage(from: postImageUrl, into: postImageView)
         }else {
@@ -154,14 +157,28 @@ class CellView: UITableViewCell {
     
     //MARK: -  Like Button UI manibulate
     private func updateLikeButtonUI() {
-        let imageName = isLiked ? "heart.fill" : "heart"
-        likeButton.setImage(UIImage(systemName: imageName), for: .normal)
-        likeButton.isSelected = isLiked
+        
     }
-    
     //MARK: - Selectors
     @objc private func likeButtonTapped() {
-        isLiked.toggle()
-        updateLikeButtonUI()
+        
+        guard let postId = post?.id else {
+            print("Error: post is nil")
+            return
+        }
+        
+        if (!viewModel.isLiked)  {
+            likeButton.isSelected = true
+            likeButton.setImage(UIImage(systemName:  "heart.fill"), for: .normal)
+            viewModel.isLiked = true
+            print("top the post that has the id: \(postId) selected and liked: \(viewModel.isLiked)")
+            viewModel.saveLikeState(for: postId)
+        }else {
+            likeButton.setImage(UIImage(systemName:  "heart"), for: .normal)
+            viewModel.isLiked = false
+            print("bottom the post that has the id: \(postId) is liked: \(viewModel.isLiked)")
+            viewModel.saveLikeState(for: postId)
+        }
+      
     }
 }
