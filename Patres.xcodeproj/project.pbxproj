@@ -6,15 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		C5FB60A42D8EA8A100B841F4 /* Post+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FB60A22D8EA8A100B841F4 /* Post+CoreDataClass.swift */; };
-		C5FB60A52D8EA8A100B841F4 /* Post+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5FB60A32D8EA8A100B841F4 /* Post+CoreDataProperties.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		C55BFDE02D889C0C002D25A4 /* Patres.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Patres.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C5FB60A22D8EA8A100B841F4 /* Post+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Post+CoreDataClass.swift"; path = "Patres/Model/Post+CoreDataClass.swift"; sourceTree = "<group>"; };
-		C5FB60A32D8EA8A100B841F4 /* Post+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Post+CoreDataProperties.swift"; path = "Patres/Model/Post+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -24,6 +17,8 @@
 				"/Localized: Supportings/LaunchScreen.storyboard",
 				Info.plist,
 				Model.xcdatamodeld,
+				"Model/Post+CoreDataClass.swift",
+				"Model/Post+CoreDataProperties.swift",
 				Supportings/Assets.xcassets,
 			);
 			target = C55BFDDF2D889C0C002D25A4 /* Patres */;
@@ -31,7 +26,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		C54D0AD82D8EAAEC003DEAA6 /* Exceptions for "Patres" folder in "Copy Bundle Resources" phase from "Patres" target */ = {
+		C54D0ADD2D8EF378003DEAA6 /* Exceptions for "Patres" folder in "Copy Bundle Resources" phase from "Patres" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = C55BFDDE2D889C0C002D25A4 /* Resources */;
 			membershipExceptions = (
@@ -45,7 +40,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				C55BFDF52D889C0D002D25A4 /* Exceptions for "Patres" folder in "Patres" target */,
-				C54D0AD82D8EAAEC003DEAA6 /* Exceptions for "Patres" folder in "Copy Bundle Resources" phase from "Patres" target */,
+				C54D0ADD2D8EF378003DEAA6 /* Exceptions for "Patres" folder in "Copy Bundle Resources" phase from "Patres" target */,
 			);
 			path = Patres;
 			sourceTree = "<group>";
@@ -66,8 +61,6 @@
 		C55BFDD72D889C0C002D25A4 = {
 			isa = PBXGroup;
 			children = (
-				C5FB60A22D8EA8A100B841F4 /* Post+CoreDataClass.swift */,
-				C5FB60A32D8EA8A100B841F4 /* Post+CoreDataProperties.swift */,
 				C55BFDE22D889C0C002D25A4 /* Patres */,
 				C55BFDE12D889C0C002D25A4 /* Products */,
 			);
@@ -157,8 +150,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5FB60A42D8EA8A100B841F4 /* Post+CoreDataClass.swift in Sources */,
-				C5FB60A52D8EA8A100B841F4 /* Post+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

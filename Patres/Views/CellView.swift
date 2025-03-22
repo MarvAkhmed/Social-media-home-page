@@ -73,10 +73,8 @@ class CellView: UITableViewCell {
     
     //MARK: - Cell Configuration
     public func configure(with post: PostDecoded){
-        
         handleAvatarImage(with: post)
         handlePostImage(with: post)
-        
         usernameLabel.text = post.username
         captionLabel.text = post.caption
         isLiked = post.isLiked 
@@ -105,7 +103,7 @@ class CellView: UITableViewCell {
     
     //post image url
     private func handlePostImage(with post: PostDecoded) {
-        if let postImageUrl = URL(string: post.postImageUrl!) {
+        if let postImageUrl = URL(string: post.postImageUrl ?? "" ) {
             loadingSpinner.startAnimating()
             downloadImage(from: postImageUrl, into: postImageView)
         }else {

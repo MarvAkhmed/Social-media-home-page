@@ -11,7 +11,6 @@ class HomeViewController: UIViewController {
     
     //MARK: - Properties
     private let viewModel = HomeViewModel.shared
-    private(set) var posts: [PostDecoded] = []
     var isPaginating: Bool = false
     
     // MARK: - UI Components
@@ -53,31 +52,26 @@ class HomeViewController: UIViewController {
             self.tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             self.tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
-    
     }
     
     // MARK: - API Requests
     private func bindData() {
         Task {
             do {
-                let newPosts = try await viewModel.fetchPosts(pagination: true)
-                self.posts.append(contentsOf: newPosts)
+                try await viewModel.addNewPosts()
                 DispatchQueue.main.async { [self] in
-                    self.viewModel.mapDecodedPostToCoreData(posts: newPosts)
-                    viewModel.mapCoreDataPostToDecodedPost()
                     self.tableView.reloadData()
                     self.isPaginating = false
                     self.tableView.tableFooterView = nil
                     self.tableView.isUserInteractionEnabled = true
                 }
             } catch {
-                print("Pagination fetch error: \(error)")
+                print("Pagination fetch error: \(error.localizedDescription)")
                 self.isPaginating = false
 
             }
         }
     }
-    
     
     //MARK: - Selectors
     @objc private func didTapUpdateButton() {
@@ -92,14 +86,12 @@ class HomeViewController: UIViewController {
 // MARK: - UITableView Delegate & DataSource
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(posts.count)
-       return  posts.count
+        return viewModel.posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard  let cell = tableView.dequeueReusableCell(withIdentifier: CellView.identifier, for: indexPath) as? CellView  else { fatalError("Couldn't dequeue cell") }
-        
-        let post = posts[indexPath.row]
+        let post = viewModel.posts[indexPath.row]
         cell.configure(with: post)
         return cell
     }

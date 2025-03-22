@@ -15,4 +15,5 @@ struct PostDecoded: Decodable {
     let caption: String?
     let isLiked: Bool
 
+
 }
