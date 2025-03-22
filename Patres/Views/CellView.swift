@@ -80,7 +80,7 @@ class CellView: UITableViewCell {
         handlePostImage(with: post)
         usernameLabel.text = post.username
         captionLabel.text = post.caption
-        
+        updateLikeButtonUI()
     }
     
     // download the images from the decoded url to the ui components
@@ -157,6 +157,12 @@ class CellView: UITableViewCell {
     
     //MARK: -  Like Button UI manibulate
     private func updateLikeButtonUI() {
+        guard let postId = post?.id else { return }
+        
+        let isLiked = viewModel.isPostLiked(postId: postId)
+        let heartImage = UIImage(systemName: isLiked ? "heart.fill" : "heart")
+        
+        likeButton.setImage(heartImage, for: .normal)
         
     }
     //MARK: - Selectors
@@ -167,18 +173,10 @@ class CellView: UITableViewCell {
             return
         }
         
-        if (!viewModel.isLiked)  {
-            likeButton.isSelected = true
-            likeButton.setImage(UIImage(systemName:  "heart.fill"), for: .normal)
-            viewModel.isLiked = true
-            print("top the post that has the id: \(postId) selected and liked: \(viewModel.isLiked)")
-            viewModel.saveLikeState(for: postId)
-        }else {
-            likeButton.setImage(UIImage(systemName:  "heart"), for: .normal)
-            viewModel.isLiked = false
-            print("bottom the post that has the id: \(postId) is liked: \(viewModel.isLiked)")
-            viewModel.saveLikeState(for: postId)
+        viewModel.toggleLikeState(for: postId)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [self] in
+            updateLikeButtonUI()
         }
-      
     }
+
 }

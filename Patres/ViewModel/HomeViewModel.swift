@@ -22,7 +22,8 @@ class HomeViewModel {
     //MARK: - Variables
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     private(set) var posts: [PostDecoded] = []
-    var isLiked: Bool = false
+    var isLiked = false
+    private var post: PostDecoded?
     //MARK: - Networking method (fetching and Parsing the Data from API)
     
     /// fetching the posts
@@ -140,15 +141,32 @@ extension HomeViewModel {
 //MARK: - Update the core data(Like button)
 extension HomeViewModel {
     /// check if the post liked
-    func saveLikeState(for postId: String) {
-        
+    func isPostLiked(postId: String) -> Bool {
+        guard let post = findPostById(by: postId) else {
+            return false
+        }
+        return post.isLiked
+    }
+    
+    /// toogle the state
+    func toggleLikeState(for postId: String) {
         guard let post = findPostById(by: postId) else {
             print("Post with id \(postId) not found.")
             return
         }
         
-        print("in the core data Post with id \(postId) is Liked \(post.isLiked)")
-   
+        post.isLiked.toggle()
+        saveToCoreData()
+    }
+    
+    /// persist the like state to core data
+    func saveLikeState(for postId: String) {
+        guard let post = findPostById(by: postId) else {
+            print("Post with id \(postId) not found.")
+            return
+        }
+        
+        post.isLiked = isPostLiked(postId: postId)
         saveToCoreData()
     }
 }
@@ -169,5 +187,4 @@ extension HomeViewModel {
         fetchRequest.predicate = NSPredicate(format: "id == %@", id)
         return (try? context.fetch(fetchRequest))?.first
     }
-
 }
