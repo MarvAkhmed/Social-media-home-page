@@ -28,10 +28,8 @@ class HomeViewController: UIViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindData()
         configureNavigationBar()
         setupUI()
-        
     }
     
     // MARK: - Navigation Bar Configuration
@@ -55,7 +53,7 @@ class HomeViewController: UIViewController {
     }
     
     // MARK: - API Requests
-    private func bindData() {
+    private func bindView() {
         Task {
             do {
                 try await viewModel.addNewPosts()
@@ -112,19 +110,16 @@ extension HomeViewController: UIScrollViewDelegate {
             isPaginating = true
             tableView.isUserInteractionEnabled = false
             self.tableView.tableFooterView = createSpinnerFooter()
-            bindData()
+            bindView()
         }
     }
-}
-
-// MARK: - Spinner Footer
-extension HomeViewController {
+    
     private func createSpinnerFooter() -> UIView {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 100))
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.translatesAutoresizingMaskIntoConstraints = false
         footerView.addSubview(spinner)
-
+        
         NSLayoutConstraint.activate([
             spinner.centerXAnchor.constraint(equalTo: footerView.centerXAnchor),
             spinner.centerYAnchor.constraint(equalTo: footerView.centerYAnchor)
@@ -133,5 +128,4 @@ extension HomeViewController {
         spinner.startAnimating()
         return footerView
     }
-
 }

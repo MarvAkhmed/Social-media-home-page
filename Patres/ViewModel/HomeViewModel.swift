@@ -87,7 +87,6 @@ class HomeViewModel {
         }
     }
 
-
     //MARK: - Offline mood caching data
     func loadCachedPosts() -> [PostDecoded] {
         let fetchRequests: NSFetchRequest<Post> = Post.fetchRequest()

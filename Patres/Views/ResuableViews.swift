@@ -9,7 +9,7 @@ import UIKit
 
 class ResuableViews: UIView {
     
-     static let shared:  ResuableViews = ResuableViews()
+    static let shared:  ResuableViews = ResuableViews()
     
     func showNetworkErrorAlert(from viewController: UIViewController) {
         print("should show the alert")
