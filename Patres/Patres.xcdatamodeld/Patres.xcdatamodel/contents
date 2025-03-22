@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24D81" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
-    <entity name="Post" representedClassName="Post" syncable="YES" codeGenerationType="category">
+    <entity name="Post" representedClassName="Post" isAbstract="YES" syncable="YES" codeGenerationType="category">
         <attribute name="avatarUrl" optional="YES" attributeType="String"/>
         <attribute name="caption" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>

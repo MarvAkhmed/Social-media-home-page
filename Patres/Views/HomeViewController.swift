@@ -29,7 +29,7 @@ class HomeViewController: UIViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        try? bindData()
+        bindData()
         configureNavigationBar()
         setupUI()
         
@@ -90,7 +90,8 @@ class HomeViewController: UIViewController {
 // MARK: - UITableView Delegate & DataSource
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        posts.count
+        print(posts.count)
+       return  posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
