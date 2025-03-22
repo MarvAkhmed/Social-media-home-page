@@ -84,7 +84,8 @@ class CellView: UITableViewCell {
     // download the images from the decoded url to the ui components
     private func downloadImage(from url: URL, into imageView: UIImageView) {
         DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+            if let data = try? Data(contentsOf: url),
+               let image = UIImage(data: data) {
                 DispatchQueue.main.async {
                     imageView.image = image
                     self.loadingSpinner.stopAnimating()

@@ -22,6 +22,7 @@ class HomeViewModel {
     //MARK: - Variables
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     private(set) var posts: [PostDecoded] = []
+    
     //MARK: - Networking method (fetching and Parsing the Data from API)
     
     /// fetching the posts
@@ -77,7 +78,7 @@ class HomeViewModel {
     /// download images from the api(the exact url of the desired image)
     func downloadImage(from urlString: String?) async -> Data? {
         guard let urlString = urlString,
-              let url = URL(string: urlString) else { return nil }
+           let url = URL(string: urlString) else { return nil}
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
@@ -117,7 +118,7 @@ class HomeViewModel {
         let fileManager = FileManager.default
         guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
         
-        let fileName = UUID().uuidString + ".jpg"
+        let fileName = UUID().uuidString
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
         
         do {
